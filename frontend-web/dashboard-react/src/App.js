@@ -54,11 +54,11 @@ function App() {
       <Container align="center">
         <br />
         <Typography variant="h3">
-          Monitor della temperatura
+          Temperature monitor
         </Typography>
         <br />
         <Typography>
-          Temperatura media delle ultime 10 misurazioni:{" "}
+          Average temp:{" "}
           <Typography variant="h4" color="error">
             {!tempArray ? "loading" : getAverageTemp(tempArray)}
           </Typography>
