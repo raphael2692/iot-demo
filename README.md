@@ -10,7 +10,7 @@ The application is composed of:
 4. FastAPI (to serve data in a RESTful manner with using http)
 5. React frontend (which query FastAPI for temperature data)
 
-Every component of the app is dockerized. To run the app, create a database using a free istance of [Atlas]("https://www.mongodb.com/cloud/atlas/register") and create a database named "database-test". Get the uri and add it the config files in `/backend` and `/sensor`. 
+Every component of the app is dockerized. To run the app, create a database using a free istance of [Atlas](https://www.mongodb.com/cloud/atlas/register) and create a database named "database-test". Get the uri and add it the config files in `/backend` and `/sensor`. 
 
 Run the app using docker-compose:
 
