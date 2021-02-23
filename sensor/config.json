@@ -1,0 +1,7 @@
+{
+
+"database" : {
+    "uri": "Inserire qui l'URI del db su MongoDB Atlas"
+}
+
+}

@@ -1,0 +1,55 @@
+version: "3.3"
+services:
+
+  broker:
+    image: eclipse-mosquitto
+    hostname: mosquitto
+    container_name: mosquitto
+    expose:
+      - "1883"
+      - "9001"
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    volumes:
+      - ./broker/conf/mosquitto.conf:/mosquitto/config/mosquitto.conf
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000
+    volumes:
+      - ./backend:/app
+  
+  sensor:
+    environment:
+      - PYTHONUNBUFFERED=1
+    build:
+      context: ./sensor
+      dockerfile: Dockerfile
+    volumes:
+      - ./sensor:/app
+    depends_on:
+      - broker
+  
+  broadcaster:
+    environment:
+      - PYTHONUNBUFFERED=1
+    build:
+      context: ./broadcaster
+      dockerfile: Dockerfile
+    volumes:
+      - ./broadcaster:/app
+    depends_on:
+      - broker
+    
+  frontend:
+    build:
+      context: ./frontend-web/dashboard-react
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    volumes:
+      - ./frontend-web/dashboard-react:/app
