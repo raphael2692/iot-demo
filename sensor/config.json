@@ -1,7 +1,7 @@
 {
 
 "database" : {
-    "uri": "Inserire qui l'URI del db su MongoDB Atlas"
+    "uri": "mongodb+srv://rspataro-1:JU01XvDZ5VOj85TX@cluster0.djnnw.mongodb.net/database-test?retryWrites=true&w=majority"
 }
 
 }

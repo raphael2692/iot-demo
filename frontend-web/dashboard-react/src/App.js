@@ -69,13 +69,13 @@ function App() {
 
       <Container>
         <hr />
-        <Typography variant="h5">Ultimi rilevamenti: </Typography>
+        <Typography variant="h5">Last measures: </Typography>
         <TableContainer component={Paper}>
           <Table className="BookmarksTable" aria-label="simple table">
             <TableHead>
               <TableRow>
-                <TableCell>Temperatura</TableCell>
-                <TableCell>Data</TableCell>
+                <TableCell>Temperature</TableCell>
+                <TableCell>Timestamp</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>{renderTr(tempArray)}</TableBody>
