@@ -6,4 +6,4 @@ RUN pip install pip --upgrade
 RUN pip install -r requirements.txt
 
 
-CMD ["python",  "topic_broadcaster.py", "--topic", "sensore_temperatura"]
+CMD ["python",  "consumer.py", "--topic", "sensore_temperatura", "--database", "test-database","--collection", "sensore_temperatura"]

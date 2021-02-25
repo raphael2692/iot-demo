@@ -6,7 +6,7 @@ import time
 import datetime
 
 import random
-from pymongo import MongoClient
+
 
 import json
 with open("config.json") as json_data_file:
@@ -15,8 +15,6 @@ with open("config.json") as json_data_file:
 
 parser = argparse.ArgumentParser()
 
-parser.add_argument('--database', required=False, default="test", help="Nome del db MongoDB")
-parser.add_argument('--collection', required=True, help="Nome della collection MongoDB, relativamente a un sensore, ad es. 'sensore_temperatura'")
 parser.add_argument('--fake_key', required=True, help="Nome di un valore da misurare, ad es. 'temperatura'")
 parser.add_argument('-t', '--topic', required=True)
 parser.add_argument('-H', '--host', required=False, default="172.17.0.1") # risolto con IP interno di docker (default)
@@ -36,10 +34,6 @@ parser.add_argument('--tls-version', required=False, default=None, help='TLS pro
 parser.add_argument('-D', '--debug', action='store_true')
 args, unknown = parser.parse_known_args()
 
-# Connessione a Mongo
-client = MongoClient(config["database"]["uri"])
-db = client[args.database]
-collection = db[args.collection]
 
 # Callbacks
 def on_connect(mqttc, obj, flags, rc):
@@ -49,8 +43,9 @@ def on_message(mqttc, obj, msg):
     print(msg.topic + " " + str(msg.qos) + " " + str(msg.payload))
 
 def on_publish(mqttc, obj, mid):
-    print("mid: " + str(mid))
-
+    # print("mid: " + str(mid))
+    print("Pubblicato nuovo messaggio!")
+    
 def on_subscribe(mqttc, obj, mid, granted_qos):
     print("Subscribed: " + str(mid) + " " + str(granted_qos))
 
@@ -120,11 +115,11 @@ try:
         fake_key = args.fake_key
         fake_val = str(random.randint(10,25))
         msg_txt = '{"'+ fake_key +'": "'+ fake_val +'"}'
-        msg_dict = {fake_key: fake_val, "data": datetime.datetime.utcnow()}
+
         # print("Publishing: "+msg_txt)
         infot = mqttc.publish(args.topic, msg_txt, qos=args.qos)
         infot.wait_for_publish()
-        insert = collection.insert_one(msg_dict)
+        
         
         time.sleep(args.delay)
         

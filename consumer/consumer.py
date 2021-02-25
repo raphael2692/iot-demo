@@ -1,9 +1,24 @@
 import paho.mqtt.client as mqtt
 import argparse
+from pymongo import MongoClient
+import json
+import datetime
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--topic', required=True, help="Nome topic")
+parser.add_argument('--database', required=False, default="test", help="Nome del db MongoDB")
+parser.add_argument('--collection', required=True, help="Nome della collection MongoDB, relativamente a un sensore, ad es. 'sensore_temperatura'")
 args, unknown = parser.parse_known_args()
+
+
+with open("config.json") as json_data_file:
+    config = json.load(json_data_file)
+
+
+# Connessione a Mongo
+client = MongoClient(config["database"]["uri"])
+db = client[args.database]
+collection = db[args.collection]
 
 def on_connect(mqttc, obj, flags, rc):
     print("rc: " + str(rc))
@@ -14,6 +29,11 @@ def on_message(mqttc, obj, msg):
     print("Topic: ", msg.topic)
     # print("Qos: ", str(msg.qos))
     print("Payload: ", str(msg.payload))
+    msg_dec = msg.payload.decode('utf-8')
+    msg_dict = json.loads(msg_dec)
+    msg_dict = {list(msg_dict.keys())[0]: list(msg_dict.values())[0], "data": datetime.datetime.utcnow()}
+    insert = collection.insert_one(msg_dict)
+    print("Messaggio inviato al database")
     # print(msg.topic + " " + str(msg.qos) + " " + str(msg.payload))
 
 

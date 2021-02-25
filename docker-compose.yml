@@ -23,25 +23,25 @@ services:
     volumes:
       - ./backend:/app
   
-  sensor:
+  producer:
     environment:
       - PYTHONUNBUFFERED=1
     build:
-      context: ./sensor
+      context: ./producer
       dockerfile: Dockerfile
     volumes:
-      - ./sensor:/app
+      - ./producer:/app
     depends_on:
       - broker
   
-  broadcaster:
+  consumer:
     environment:
       - PYTHONUNBUFFERED=1
     build:
-      context: ./broadcaster
+      context: ./consumer
       dockerfile: Dockerfile
     volumes:
-      - ./broadcaster:/app
+      - ./consumer:/app
     depends_on:
       - broker
     
