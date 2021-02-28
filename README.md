@@ -35,6 +35,7 @@ Una volta che il servizio è attivo, è possibile modificare il sorgente senza b
 6. Connettere dei nuovi sensori "fake" e creare nuove route (sul backend) e view (sul frontend)
 7. Creare un modello di forecasting della temperatura e implementare su FastAPI una route per le predizioni e delle view interessanti su React
 8. Implementare un meccanismo di job watching e load balancing
+9. Implementare CI/CD su gitlab
 
 
 ## Screenshot
