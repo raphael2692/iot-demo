@@ -38,7 +38,9 @@ database = client["test-database"]
 temp_collection = database.get_collection("sensore_temperatura")
 
 
-app.include_router(TemperaturesRouter, tags=["Temperature"], prefix="/temperatures")
+app.include_router(TemperaturesRouter, tags=[
+                   "Temperature"], prefix="/temperatures")
+
 
 @app.get("/", tags=["Root"])
 async def read_root():

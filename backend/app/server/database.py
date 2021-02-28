@@ -16,7 +16,7 @@ temp_collection = database.get_collection("sensore_temperatura")
 def list_to_dict(item) -> dict:
     return {
         "id": str(item["_id"]),
-        "temperatura": str(item["temperatura"]), 
+        "temperatura": str(item["temperatura"]),
         "data": str(item["data"])
     }
 
@@ -26,5 +26,3 @@ async def retrieve_temperatures():
     async for temperature in temp_collection.find().sort("_id", -1).limit(10):
         temperatures.append(list_to_dict(temperature))
     return temperatures
-
-    
