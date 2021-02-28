@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 
+import Chart from "react-apexcharts";
+
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
 import Table from "@material-ui/core/Table";
@@ -27,7 +29,7 @@ function App() {
   }, []);
 
   const renderTr = (array) =>
-    array.reverse().map((el) => (
+    array.map((el) => (
       <TableRow key={el.id}>
         <TableCell>{el.temperatura}</TableCell>
         <TableCell>{el.data}</TableCell>
@@ -35,12 +37,13 @@ function App() {
     ));
 
   let average = (array) => array.reduce((a, b) => a + b) / array.length;
+
   function getAverageTemp(array) {
     var temp = [];
 
     array.forEach((el) => temp.push(Number(el.temperatura)));
 
-    console.log(temp);
+    // console.log(temp);
     try {
       return average(temp);
     } catch (error) {
@@ -49,13 +52,51 @@ function App() {
     }
   }
 
+  function getTempArray(array) {
+    var temp = [];
+    try {
+      array.forEach((el) => temp.push(Number(el.temperatura)));
+      // console.log('****');
+      // console.log(temp);
+      var series = [
+        {
+          name: "series-1",
+          data: temp,
+        },
+      ];
+      return series;
+    } catch (error) {
+      console.log(error);
+      return [{}];
+    }
+  }
+
+  function getLabelArray(array) {
+    var temp = [];
+    try {
+      array.forEach((el) => temp.push(el.data));
+      console.log('****');
+      console.log(temp);
+      var labels = {
+        chart: {
+          id: "basic-bar",
+        },
+        xaxis: {
+          categories: temp,
+        },
+      };
+      return labels;
+    } catch (error) {
+      console.log(error);
+      return [{}];
+    }
+  }
+
   return (
     <div className="App">
       <Container align="center">
         <br />
-        <Typography variant="h3">
-          Temperature monitor
-        </Typography>
+        <Typography variant="h3">Temperature monitor</Typography>
         <br />
         <Typography>
           Average temp:{" "}
@@ -82,6 +123,13 @@ function App() {
           </Table>
         </TableContainer>
       </Container>
+
+      <Chart
+        options={getLabelArray(tempArray)}
+        series={getTempArray(tempArray)}
+        type="bar"
+        width="500"
+      />
     </div>
   );
 }

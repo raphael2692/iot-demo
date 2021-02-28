@@ -31,7 +31,9 @@ def on_message(mqttc, obj, msg):
     print("Payload: ", str(msg.payload))
     msg_dec = msg.payload.decode('utf-8')
     msg_dict = json.loads(msg_dec)
-    msg_dict = {list(msg_dict.keys())[0]: list(msg_dict.values())[0], "data": datetime.datetime.utcnow()}
+    msg_dict = {list(msg_dict.keys())[0]: list(msg_dict.values())[0], "data": datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")}
+    print("***********consumer.py")
+    print(msg_dict)
     insert = collection.insert_one(msg_dict)
     print("Messaggio inviato al database")
     # print(msg.topic + " " + str(msg.qos) + " " + str(msg.payload))

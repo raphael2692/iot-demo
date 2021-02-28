@@ -23,7 +23,7 @@ def list_to_dict(item) -> dict:
 # Retrieve all students present in the database
 async def retrieve_temperatures():
     temperatures = []
-    async for temperature in temp_collection.find().sort("data", -1).limit(10):
+    async for temperature in temp_collection.find().sort("_id", -1).limit(10):
         temperatures.append(list_to_dict(temperature))
     return temperatures
 
