@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 
 import Chart from "react-apexcharts";
 
+// import Grid from "@material-ui/core/Grid";
+
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
 import Table from "@material-ui/core/Table";
@@ -60,7 +62,7 @@ function App() {
       // console.log(temp);
       var series = [
         {
-          name: "series-1",
+          name: "Temperature",
           data: temp,
         },
       ];
@@ -75,11 +77,11 @@ function App() {
     var temp = [];
     try {
       array.forEach((el) => temp.push(el.data));
-      console.log('****');
-      console.log(temp);
+      // console.log('****');
+      // console.log(temp);
       var labels = {
         chart: {
-          id: "basic-bar",
+          id: "lineplot",
         },
         xaxis: {
           categories: temp,
@@ -98,6 +100,12 @@ function App() {
         <br />
         <Typography variant="h3">Temperature monitor</Typography>
         <br />
+        <Chart
+          options={getLabelArray(tempArray)}
+          series={getTempArray(tempArray)}
+          type="line"
+          width="800"
+        />
         <Typography>
           Average temp:{" "}
           <Typography variant="h4" color="error">
@@ -107,7 +115,6 @@ function App() {
       </Container>
       <br />
       <br />
-
       <Container>
         <hr />
         <Typography variant="h5">Last measures: </Typography>
@@ -123,13 +130,6 @@ function App() {
           </Table>
         </TableContainer>
       </Container>
-
-      <Chart
-        options={getLabelArray(tempArray)}
-        series={getTempArray(tempArray)}
-        type="bar"
-        width="500"
-      />
     </div>
   );
 }
