@@ -33,7 +33,7 @@ def on_message(mqttc, obj, msg):
     msg_dict = {list(msg_dict.keys())[0]: list(msg_dict.values())[
         0], "data": datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")}
     insert = collection.insert_one(msg_dict)
-    print("Messaggio inviato al database")
+    print("Callback: Messaggio inviato a MongoDB.")
 
 # def on_publish(mqttc, obj, mid):
 #     print("mid: " + str(mid))

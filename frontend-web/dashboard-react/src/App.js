@@ -1,10 +1,11 @@
+// Hooks
 import { useState, useEffect } from "react";
-
+// ApexCharts
 import Chart from "react-apexcharts";
-
-// import Grid from "@material-ui/core/Grid";
-
+// MaterialUI components
+import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
+import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -13,8 +14,13 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
+import { styled } from "@material-ui/core/styles";
 
 function App() {
+
+  // Hooks per richiedere e aggiornare i valori di temperatura 
+  // useEffect fetcha i dati e aggiorna l'hook "tempArray"
+
   const [tempArray, setTempArray] = useState([]);
 
   useEffect(() => {
@@ -30,6 +36,7 @@ function App() {
     };
   }, []);
 
+  // Funzione per popolare le righe della Table "TempTable"
   const renderTr = (array) =>
     array.map((el) => (
       <TableRow key={el.id}>
@@ -38,8 +45,10 @@ function App() {
       </TableRow>
     ));
 
+  // Funzione per calcolare la media
   let average = (array) => array.reduce((a, b) => a + b) / array.length;
 
+  // Get per calcolare la media di un array di interi
   function getAverageTemp(array) {
     var temp = [];
 
@@ -53,7 +62,7 @@ function App() {
       return [];
     }
   }
-
+// Get per i valori del plot (ApexCharts series{})
   function getTempArray(array) {
     var temp = [];
     try {
@@ -62,7 +71,7 @@ function App() {
       // console.log(temp);
       var series = [
         {
-          name: "Temperature",
+          name: "Temperatura",
           data: temp,
         },
       ];
@@ -72,7 +81,7 @@ function App() {
       return [{}];
     }
   }
-
+// Get per il label del plot (ApexCharts options{})
   function getLabelArray(array) {
     var temp = [];
     try {
@@ -94,41 +103,85 @@ function App() {
     }
   }
 
+
+  // Hook tipo plot
+  const [currentGraph, setCurrentGraph] = useState("bar");
+  // Syles
+  const HeaderWrap = styled(Container)({
+    background: "#2196f3",
+    color: "white",
+  });
+
+
+
   return (
     <div className="App">
-      <Container align="center">
+      <HeaderWrap maxWidth={false} align="center">
         <br />
-        <Typography variant="h3">Temperature monitor</Typography>
+        <Typography variant="h1">IoT Dashboard Demo</Typography>
         <br />
-        <Chart
-          options={getLabelArray(tempArray)}
-          series={getTempArray(tempArray)}
-          type="line"
-          width="800"
-        />
-        <Typography>
-          Average temp:{" "}
-          <Typography variant="h4" color="error">
-            {!tempArray ? "loading" : getAverageTemp(tempArray)}
-          </Typography>
+        <br />
+        <br />
+      </HeaderWrap>
+
+      <Container maxWidth="lg">
+        <br />
+        <br />
+        <Typography variant="h3">
+          Monitor della temperatura{" "}
+          {tempArray.length === 0 ? "(caricamento in corso...)" : ""}
         </Typography>
-      </Container>
-      <br />
-      <br />
-      <Container>
-        <hr />
-        <Typography variant="h5">Last measures: </Typography>
-        <TableContainer component={Paper}>
-          <Table className="BookmarksTable" aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell>Temperature</TableCell>
-                <TableCell>Timestamp</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>{renderTr(tempArray)}</TableBody>
-          </Table>
-        </TableContainer>
+        <br />
+        <Typography variant="h4">
+          Temperatura media:{" "}
+          {tempArray.length === 0 ? "" : getAverageTemp(tempArray)}
+        </Typography>
+        <br />
+        <br />
+        <Typography variant="h4">Analytics</Typography>
+        <Typography>
+              <br />
+              STILE DEL GRAFICO:
+              <Button onClick={() => setCurrentGraph("line")}>
+                Lineplot
+              </Button>
+              <Button onClick={() => setCurrentGraph("bar")}>
+                Histogram
+              </Button>
+              <br />
+            </Typography>
+        <Grid
+
+          direction="row"
+          justify="center"
+          alignItems="center"
+          spacing={1}
+          container
+        >
+          <Grid container item lg={6} spacing={3}>
+            <Chart
+              options={getLabelArray(tempArray)}
+              series={getTempArray(tempArray)}
+              type={currentGraph}
+              width="550"
+              height="600"
+            />
+          </Grid>
+
+          <Grid container item lg={6} spacing={3}>
+            <TableContainer component={Paper}>
+              <Table className="TempTable" aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Temperatura</TableCell>
+                    <TableCell>Data</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>{renderTr(tempArray)}</TableBody>
+              </Table>
+            </TableContainer>
+          </Grid>
+        </Grid>
       </Container>
     </div>
   );
