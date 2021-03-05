@@ -35,8 +35,10 @@ Una volta che il servizio è attivo, è possibile modificare il sorgente senza b
 6. Connettere dei nuovi sensori "fake" e creare nuove route (sul backend) e view (sul frontend)
 7. Creare un modello di forecasting della temperatura e implementare su FastAPI una route per le predizioni e delle view interessanti su React
 8. Implementare un meccanismo di job watching e load balancing
-9. Implementare CI/CD su gitlab
-10. Trovare un modo per aggiornare il componente React del grafico solo se i dati sono diversi (e non ogni volta che viene fatta una richiesta http)
+9. Trovare un modo per aggiornare il componente React del grafico solo se i dati sono diversi (e non ogni volta che viene fatta una richiesta http)
+10. Implementare CI/CD su gitlab (risolvere prima il networking interno e la build del frontend)
+11. Implementare un webserver production-ready (nginx)
+12. Scrivere i test
 
 
 ## Screenshot
@@ -48,6 +50,13 @@ Una volta che il servizio è attivo, è possibile modificare il sorgente senza b
 
 ### Swagger
 ![FastAPI](/screens/fastapi_route.png)
+
+
+## TODO
+
+1. Migliorare il networking dell'applicazione
+2. Risolvere npm start fail su installazioni di docker diverse (probabilmente va rivisto il Dockerfile della dashboard)
+
 
 
 
