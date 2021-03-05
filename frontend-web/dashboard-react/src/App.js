@@ -17,8 +17,7 @@ import Paper from "@material-ui/core/Paper";
 import { styled } from "@material-ui/core/styles";
 
 function App() {
-
-  // Hooks per richiedere e aggiornare i valori di temperatura 
+  // Hooks per richiedere e aggiornare i valori di temperatura
   // useEffect fetcha i dati e aggiorna l'hook "tempArray"
 
   const [tempArray, setTempArray] = useState([]);
@@ -30,7 +29,7 @@ function App() {
       // console.log(fetchedTemp);
       setTempArray(fetchedTemp);
     };
-    const interval = setInterval(fetchAllTemp, 5000);
+    const interval = setInterval(fetchAllTemp, 10000);
     return () => {
       clearInterval(interval);
     };
@@ -62,7 +61,7 @@ function App() {
       return [];
     }
   }
-// Get per i valori del plot (ApexCharts series{})
+  // Get per i valori del plot (ApexCharts series{})
   function getTempArray(array) {
     var temp = [];
     try {
@@ -81,7 +80,7 @@ function App() {
       return [{}];
     }
   }
-// Get per il label del plot (ApexCharts options{})
+  // Get per il label del plot (ApexCharts options{})
   function getLabelArray(array) {
     var temp = [];
     try {
@@ -103,16 +102,26 @@ function App() {
     }
   }
 
-
+  function MyChart(props) {
+    return (
+      <Grid container item lg={6} spacing={3}>
+        <Chart
+          options={props.options}
+          series={props.series}
+          type={props.type}
+          width="550"
+          height="600"
+        />
+      </Grid>
+    );
+  }
   // Hook tipo plot
-  const [currentGraph, setCurrentGraph] = useState("bar");
+  const [currentGraph, setCurrentGraph] = useState("line");
   // Syles
   const HeaderWrap = styled(Container)({
     background: "#2196f3",
     color: "white",
   });
-
-
 
   return (
     <div className="App">
@@ -140,33 +149,24 @@ function App() {
         <br />
         <Typography variant="h4">Analytics</Typography>
         <Typography>
-              <br />
-              STILE DEL GRAFICO:
-              <Button onClick={() => setCurrentGraph("line")}>
-                Lineplot
-              </Button>
-              <Button onClick={() => setCurrentGraph("bar")}>
-                Histogram
-              </Button>
-              <br />
-            </Typography>
+          <br />
+          STILE DEL GRAFICO:
+          <Button onClick={() => setCurrentGraph("line")}>Lineplot</Button>
+          <Button onClick={() => setCurrentGraph("bar")}>Histogram</Button>
+          <br />
+        </Typography>
         <Grid
-
           direction="row"
           justify="center"
           alignItems="center"
           spacing={1}
           container
         >
-          <Grid container item lg={6} spacing={3}>
-            <Chart
-              options={getLabelArray(tempArray)}
-              series={getTempArray(tempArray)}
-              type={currentGraph}
-              width="550"
-              height="600"
-            />
-          </Grid>
+          <MyChart
+            options={getLabelArray(tempArray)}
+            series={getTempArray(tempArray)}
+            type={currentGraph}
+          ></MyChart>
 
           <Grid container item lg={6} spacing={3}>
             <TableContainer component={Paper}>
